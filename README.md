@@ -4,7 +4,7 @@ This program makes possible to have multiple instances of Minecraft with their o
 *Special thanks to my friend, Tomás Henrique Strotsjak Barata, who helped me in testing this software.*
 
 
-##Launch
+## Launch
 
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
 If you have installed Python3, you can run the program by executing this command in console:
@@ -16,7 +16,7 @@ The recommended way of executing this program on Windows is
 to double click on `minecraft_instance_manager-0.0.2.py`.***
 
 
-##How does this program work
+## How does this program work
 
 The selected instance folder is used as a Minecraft (`.minecraft`) folder.
 
@@ -28,7 +28,7 @@ Linux:      ~/.minecraft
 `.minecraft` folder is a symlink that is targeted at the selected instance folder.
 
 
-##How to manage Minecraft instances
+## How to manage Minecraft instances
 
 Instance folder can be managed just like a normal Minecraft ('.minecraft') folder
 Minecraft instances are stored here:
