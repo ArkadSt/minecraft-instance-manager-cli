@@ -12,8 +12,7 @@ If you have installed Python3, you can run the program by executing this command
 `python minecraft_instance_manager-x.x.x.py`
 
 ***NB! On Windows this program requires administrative priveleges.
-The recommended way of executing this program on Windows is
-to double click on `minecraft_instance_manager-x.x.x.py`.***
+The recommended way of executing this program on Windows is to double click on `minecraft_instance_manager-x.x.x.py`.***
 
 
 ## How does this program work
@@ -30,7 +29,7 @@ Linux:      ~/.minecraft
 
 ## How to manage Minecraft instances
 
-Instance folder can be managed just like a normal Minecraft ('.minecraft') folder
+Instance folder can be managed just like a normal Minecraft ('.minecraft') folder.
 Minecraft instances are stored here:
 
 ```
@@ -41,5 +40,4 @@ Linux:      ~/.minecraft_instance_manager
 After creating the instance folder already has such folders as `mods`, `resourcepacks`, `saves`.
 Install everything you need there.
 
-By modifying `%appdata%\.minecraft` on Windows or `~/.minecraft` on Linux you modify the default Minecraft instance.
-Instance folders can be created and deleted manually as well. My utility just makes it easier (I hope).
+By modifying `%appdata%\.minecraft` on Windows or `~/.minecraft` on Linux you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
