@@ -9,11 +9,11 @@ This program makes possible to have multiple instances of Minecraft with their o
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
 If you have installed Python3, you can run the program by executing this command in console:
 
-`python minecraft_instance_manager-0.0.3.py`
+`python minecraft_instance_manager-x.x.x.py`
 
 ***NB! On Windows this program requires administrative priveleges.
 The recommended way of executing this program on Windows is
-to double click on `minecraft_instance_manager-0.0.2.py`.***
+to double click on `minecraft_instance_manager-x.x.x.py`.***
 
 
 ## How does this program work
