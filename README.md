@@ -11,8 +11,8 @@ If you have installed Python3, you can run the program by executing this command
 
 `python minecraft_instance_manager-x.x.x.py`
 
-***NB! On Windows this program requires administrative priveleges.
-The recommended way of executing this program on Windows is to double click on `minecraft_instance_manager-x.x.x.py`.***
+***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
+The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager-x.x.x.py` and then User Account Control (UAC) will appear.***
 
 
 ## How does this program work
