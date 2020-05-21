@@ -14,7 +14,6 @@ elif platform.system() == 'Windows':
     minecraft_parent_directory = os.getenv('APPDATA') + '\\.'
 elif platform.system() == 'Darwin':
     minecraft_parent_directory = os.getenv('HOME') + '/'
-    sys.exit(0)
 
 if not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager'):
     os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager')
