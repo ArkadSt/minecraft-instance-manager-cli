@@ -8,7 +8,7 @@ from pathlib import Path
 if platform.system() == 'Linux':
     minecraft_parent_directory = os.getenv('HOME') + '/.'
 elif platform.system() == 'Darwin':
-    minecraft_parent_directory = os.getenv('HOME') + '/'
+    minecraft_parent_directory = os.getenv('HOME') + '/Library/Application Support/'
 elif platform.system() == 'Windows':
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
@@ -35,6 +35,44 @@ def list_instances():
         print('No available instances found.')
 def select_instance():
     if len(os.listdir(minecraft_parent_directory + 'minecraft_instance_manager/instances')) > 0:
+        if os.path.exists(minecraft_parent_directory + 'minecraft'):
+            if os.path.islink(minecraft_parent_directory + 'minecraft'):
+                os.unlink(minecraft_parent_directory + 'minecraft')
+            else:
+                if not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/backups'):
+                    os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager/backups')
+                
+                backup_name = 'minecraft.backup'
+                index = 1
+                while os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/backups/' + backup_name):
+                    backup_name = 'minecraft.backup(' + str(index) + ')'
+                    index += 1
+                print('\nSeems like you have an existing Minecraft folder (' + minecraft_parent_directory + 'minecraft). It needs to be deleted first. Choose the next step:')
+                print('* Make a backup of the Minecraft folder and continue (b)')
+                print("* Continue without making a backup. YOUR MINECRAFT FOLDER'S CONTENTS WILL BE LOST FOREVER! (nb)")
+                print('* Cancel (c)\n')
+                print('>>> ', end='')
+                action = input()
+                while action != 'b' and action != 'nb' and action != 'c':
+                    print('Seems like you are drunk as well. Sober up and try again')
+                    print('>>> ', end='')
+                    action = input()
+                if action == 'b':
+                    os.rename(minecraft_parent_directory + 'minecraft', minecraft_parent_directory + 'minecraft_instance_manager/backups/' + backup_name)
+                    print('The backup (' + minecraft_parent_directory + 'minecraft_instance_manager/backups/' + backup_name + ') was successfully created.')
+                elif action == 'nb':
+                    shutil.rmtree(minecraft_parent_directory + 'minecraft')
+                elif action == 'c':
+                    main()
+        else:
+            try:
+                os.stat(minecraft_parent_directory + 'minecraft')
+            except OSError:
+                try:
+                    os.remove(minecraft_parent_directory + 'minecraft')
+                except FileNotFoundError:
+                    pass
+
         print("Enter the name of the instance you want to select (type 'l' to list available instances, or 'c' to cancel): ", end='')
         instance_name = input()
         while not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name) or instance_name == '' or instance_name == 'l' or instance_name == 'c':
@@ -47,27 +85,6 @@ def select_instance():
             else:
                 print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 instance_name = input()
-        if os.path.exists(minecraft_parent_directory + 'minecraft'):
-            if os.path.islink(minecraft_parent_directory + 'minecraft'):
-                os.unlink(minecraft_parent_directory + 'minecraft')
-            else:
-                print('All the contents of the ' + minecraft_parent_directory + 'minecraft will be lost. Make sure that you have made a backup of your worlds. Do you want to continue? (y/n): ', end='')
-                action = input()
-                while action != 'y' and action != 'n':
-                    print('Invalid input. Alright... So what, do you want to continue? (y/n): ', end = '')
-                    action = input()
-                if action == 'y':
-                    shutil.rmtree(minecraft_parent_directory + 'minecraft')
-                elif action == 'n':
-                    main()
-        else:
-            try:
-                os.stat(minecraft_parent_directory + 'minecraft')
-            except OSError:
-                try:
-                    os.remove(minecraft_parent_directory + 'minecraft')
-                except FileNotFoundError:
-                    pass
                 
         os.symlink(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name, minecraft_parent_directory + 'minecraft')
         print('The instance "' + instance_name + '" was selected successfully.')
@@ -137,13 +154,13 @@ def delete_instance():
 
 def menu():
     print('\nMenu: ')
-    print('Display this menu (m)')
-    print('List available instances (l)')
-    print('Select instance (s)')
-    print('Unselect instance (u)')
-    print('Create instance (c)')
-    print('Delete instance (d)')
-    print('Exit (q)\n')
+    print('* Display this menu (m)')
+    print('* List available instances (l)')
+    print('* Select instance (s)')
+    print('* Unselect instance (u)')
+    print('* Create instance (c)')
+    print('* Delete instance (d)')
+    print('* Exit (q)\n')
     print('Enter the appropriate letter.')
 
 def main():
