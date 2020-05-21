@@ -12,6 +12,9 @@ elif platform.system() == 'Windows':
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
         sys.exit(0)
     minecraft_parent_directory = os.getenv('APPDATA')
+elif platform.system() == 'Darwin':
+    print('MacOS is not currently supported.')
+    sys.exit(0)
 
 if not os.path.exists(minecraft_parent_directory + '/.minecraft_instance_manager'):
     os.mkdir(minecraft_parent_directory + '/.minecraft_instance_manager')
