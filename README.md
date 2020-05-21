@@ -42,4 +42,4 @@ Install everything you need there.
 
 By modifying `%appdata%\.minecraft` on Windows or `~/.minecraft` on Linux you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
 
-***minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to `.minecraft` for example. It is safe to be removed if you don't want it there.*
+*P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to `.minecraft` for example. It is safe to be removed if you don't want it there.*
