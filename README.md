@@ -53,5 +53,6 @@ Linux:      ~/.minecraft_instance_manager/backups
 MacOS:      ~/Library/Application Support/minecraft_instance_manager/backups
 ```
 
-#########################
+
+_________________
 *P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to `.minecraft` for example. It is safe to be removed if you don't want it there.*
