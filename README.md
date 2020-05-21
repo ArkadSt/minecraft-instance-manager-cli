@@ -22,6 +22,7 @@ The selected instance folder is used as a Minecraft (`.minecraft`) folder.
 ```
 Windows:    %appdata%\.minecraft
 Linux:      ~/.minecraft
+MacOS:      ~/Library/Application Support/minecraft
 ```
 
 `.minecraft` folder is a symlink that is targeted at the selected instance folder.
@@ -34,12 +35,22 @@ Minecraft instances are stored here:
 
 ```
 Windows:    %appdata%\.minecraft_instance_manager\instances
-Linux:      ~/.minecraft_instance_manager
+Linux:      ~/.minecraft_instance_manager/instances
+MacOS:      ~/Library/Application Support/minecraft_instance_manager/instances
 ```
 
 After creating the instance folder already has such folders as `mods`, `resourcepacks`, `saves`.
 Install everything you need there.
 
-By modifying `%appdata%\.minecraft` on Windows or `~/.minecraft` on Linux you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
+By modifying `.minecraft` you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
+
+## Backups
+If **minecraft_instance_manager** sees that `.minecraft` is not a symlink but a normal folder, it will offer you to make a backup. Backups created by the program are stored here:
+
+```
+Windows:    %appdata%\.minecraft_instance_manager\backups
+Linux:      ~/.minecraft_instance_manager/backups
+MacOS:      ~/Library/Application Support/minecraft_instance_manager/backups
+```
 
 *P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to `.minecraft` for example. It is safe to be removed if you don't want it there.*
