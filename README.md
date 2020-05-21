@@ -9,10 +9,10 @@ This program makes possible to have multiple instances of Minecraft with their o
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
 If you have installed Python3, you can run the program by executing this command in console:
 
-`python minecraft_instance_manager-x.x.x.py`
+`python minecraft_instance_manager.py`
 
 ***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
-The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager-x.x.x.py` and then User Account Control (UAC) will appear.***
+The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager.py` and then User Account Control (UAC) will appear.***
 
 
 ## How does this program work
