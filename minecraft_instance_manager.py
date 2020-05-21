@@ -7,13 +7,13 @@ from pathlib import Path
 
 if platform.system() == 'Linux':
     minecraft_parent_directory = os.getenv('HOME') + '/.'
+elif platform.system() == 'Darwin':
+    minecraft_parent_directory = os.getenv('HOME') + '/'
 elif platform.system() == 'Windows':
     if not ctypes.windll.shell32.IsUserAnAdmin():
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
         sys.exit(0)
     minecraft_parent_directory = os.getenv('APPDATA') + '\\.'
-elif platform.system() == 'Darwin':
-    minecraft_parent_directory = os.getenv('HOME') + '/'
 
 if not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager'):
     os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager')
