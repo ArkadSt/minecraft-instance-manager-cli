@@ -3,7 +3,6 @@ This program makes possible to have multiple instances of Minecraft with their o
 
 *Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*
 
-
 ## Launch
 
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
@@ -17,7 +16,6 @@ Windows:      python minecraft_instance_manager.py
 ***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
 The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager.py` and then User Account Control (UAC) will appear.***
 
-
 ## How does this program work
 
 The selected instance folder is used as a Minecraft folder.
@@ -30,7 +28,6 @@ MacOS:      ~/Library/Application Support/minecraft
 ```
 
 Minecraft folder is a symlink that is targeted at the selected instance folder.
-
 
 ## How to manage Minecraft instances
 
@@ -58,7 +55,6 @@ Windows:    %appdata%\.minecraft_instance_manager\backups
 Linux:      ~/.minecraft_instance_manager/backups
 MacOS:      ~/Library/Application Support/minecraft_instance_manager/backups
 ```
-
 
 ___
 *P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to Minecraft folder for example. It is safe to be removed if you don't want it there.*
