@@ -38,6 +38,9 @@ Windows:    %appdata%\.minecraft_instance_manager\instances
 Linux:      ~/.minecraft_instance_manager/instances
 MacOS:      ~/Library/Application Support/minecraft_instance_manager/instances
 ```
+*If you're a Mac user, you can open the folder through Spotlight:
+    1. Press 'Command'+'Space' or open the Spotlight popup through the magnifying glass icon in the right of the Menu Bar.
+    2. Type ~/Library/Application Support/minecraft and hit 'Enter'.*
 
 After creating the instance folder already has such folders as `mods`, `resourcepacks`, `saves`.
 Install everything you need there.
