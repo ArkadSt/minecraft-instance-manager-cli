@@ -151,7 +151,7 @@ def delete_instance():
         elif instance_name == 'c':
             main()
         elif instance_name == '.DS_Store':
-            print("WTF?! Try again (type 'l' to list available instances, or 'c' to cancel): ")
+            print("WTF?! Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
             instance_name = input()
         else:
             print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
