@@ -16,9 +16,9 @@ elif platform.system() == 'Windows':
     minecraft_parent_directory = os.getenv('APPDATA') + '\\.'
 
 minecraft_directory = minecraft_parent_directory + 'minecraft'
-minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft_instance_manager'
-instances_directory = minecraft_parent_directory + 'minecraft_instance_manager/instances/'
-backups_directory = minecraft_parent_directory + 'minecraft_instance_manager/backups/'
+minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft_instance_manager/'
+instances_directory = minecraft_instance_manager_directory + 'instances/'
+backups_directory = minecraft_instance_manager_directory + 'backups/'
 
 
 if not os.path.exists(minecraft_instance_manager_directory):
@@ -52,9 +52,9 @@ def select_instance():
                 backup_name = 'minecraft.backup'
                 index = 1
                 while os.path.exists(backups_directory + backup_name):
-                    backup_name = 'minecraft.backup(' + str(index) + ')'
+                    backup_name = 'minecraft.backup({})'.format(str(index))
                     index += 1
-                print('\nSeems like you have an existing Minecraft folder (' + minecraft_directory + '). It needs to be deleted first.\n')
+                print('\nSeems like you have an existing Minecraft folder ({}). It needs to be deleted first.\n'.format(minecraft_directory))
                 print('Choose the next step:')
                 print('* Make a backup of the Minecraft folder and continue (b)')
                 print("* Continue without making a backup. YOUR MINECRAFT FOLDER'S CONTENTS WILL BE LOST FOREVER!!! (nb)")
@@ -67,7 +67,7 @@ def select_instance():
                     action = input()
                 if action == 'b':
                     os.rename(minecraft_directory, backups_directory + backup_name)
-                    print('The backup (' + backups_directory + backup_name + ') was successfully created.')
+                    print('The backup ({}) was successfully created.'.format(backups_directory + backup_name))
                 elif action == 'nb':
                     shutil.rmtree(minecraft_directory)
                 elif action == 'c':
@@ -111,7 +111,7 @@ def unselect_instance():
         if os.path.islink(minecraft_directory):
             instance_name = os.path.split(os.readlink(minecraft_directory))[1]
             os.unlink(minecraft_directory)
-            print('The instance "' + instance_name + '" was successfully unselected.')
+            print('The instance "{}" was successfully unselected.'.format(instance_name))
     else:
         print('None of the instances are selected.')
 def create_instance():
@@ -152,7 +152,70 @@ def create_instance():
     # Not necessary, just for indication purposes
     Path(instances_directory + instance_name + '/' + instance_name + '.mp3').touch() 
     
-    print('The "' + instance_name + '" instance was successfully created.')
+    print('The "{}" instance was successfully created.'.format(instance_name))
+
+old_name = ''
+new_name = ''
+def rename_instance():
+    if len(os.listdir(instances_directory)) > 0:
+        global old_name
+        global new_name
+        if new_name != 'is being choosed already':
+            print("Enter the name of the instance you want to rename (type 'l' to list available instances, or 'c' to cancel): ", end='')
+            old_name = input()
+            while (not os.path.exists(instances_directory + old_name)
+                    or old_name == '' or old_name == 'l'
+                    or old_name == 'c' or old_name == '.DS_Store'):
+                if old_name == 'l':
+                    list_instances()
+                    rename_instance()
+                    main()
+                elif old_name == 'c':
+                    main()
+                elif old_name == '.DS_Store':
+                    print("I work with Minecraft instances, not with this Apple related shit. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                    old_name = input()
+                else:
+                    print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                    old_name = input()
+
+        print("Enter the new name of the instance (without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+        new_name = input()
+        while (os.path.exists(instances_directory + new_name)
+                or new_name == 'l' or new_name == 'c'
+                or new_name == '.DS_Store'):
+            if new_name == '':
+                print("The name of the instance cannot be blank. Try again (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+            elif new_name == 'l':
+                list_instances()
+                new_name = 'is being choosed already'
+                rename_instance()
+                main()
+            elif new_name == 'c':
+                new_name = ''
+                main()
+            elif new_name == '.DS_Store':
+                print("Are you kidding me? Just choose a normal name (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+            else:
+                print("What for did you come here at all?. Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+                
+        was_active = False
+        if os.path.exists(minecraft_directory):
+            if os.path.islink(minecraft_directory):
+                if old_name == os.path.split(os.readlink(minecraft_directory))[1]:
+                    os.unlink(minecraft_directory)
+                    was_active = True
+        
+        os.rename(instances_directory + old_name, instances_directory + new_name)
+
+        if was_active:
+            os.symlink(instances_directory + new_name, minecraft_directory)
+        print('Instance "{}" was successfully renamed to "{}".'.format(old_name, new_name))
+    else:
+        print('No available instances found.')
 def delete_instance():
     if len(os.listdir(instances_directory)) > 0:
         print("Enter the name of the instance you want to delete (type 'l' to list available instances, or 'c' to cancel): ", end='')
@@ -179,7 +242,7 @@ def delete_instance():
                     os.unlink(minecraft_directory)
 
         shutil.rmtree(instances_directory + instance_name)
-        print('The instance "' + instance_name + '" was deleted successfully')
+        print('The instance "{}" was deleted successfully.'.format(instance_name))
     else:
         print('No available instances found.')
 def menu():
@@ -189,7 +252,8 @@ def menu():
     print('* Select instance (s)')
     print('* Unselect instance (u)')
     print('* Create instance (c)')
-    print('* Delete instance (d)')
+    print('* Rename instance (r)')
+    print('* Delete instance (d) - DANGER ZONE!!!')
     print('* Exit (q)\n')
     print('Enter the appropriate letter.')
 
@@ -208,6 +272,8 @@ def main():
         unselect_instance()
     elif action == 'c':
         create_instance()
+    elif action == 'r':
+        rename_instance()
     elif action == 'd':
         delete_instance()
     elif action == 'q':
