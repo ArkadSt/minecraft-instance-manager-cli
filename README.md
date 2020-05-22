@@ -3,6 +3,21 @@ This program makes possible to have multiple instances of Minecraft with their o
 
 *Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*
 
+## Getting minecraft_instance_manager
+###### Stable
+`git clone https://github.com/ArkadSt/minecraft_instance_manager.git`
+
+###### Testing
+`git clone -b testing https://github.com/ArkadSt/minecraft_instance_manager.git`
+
+## Updating
+First `cd /path/to/minecraft_instance_manager` and then:
+###### Stable
+`git pull origin master`
+
+###### Testing
+`git pull origin testing`
+
 ## Launch
 
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
@@ -30,9 +45,6 @@ MacOS:      ~/Library/Application Support/minecraft
 Minecraft folder is a symlink that is targeted at the selected instance folder.
 
 ## How to manage Minecraft instances
-
-*On MacOS you can access `~/Library/Application Support/` using Spotlight. Just type `~/Library/Application Support/` into the prompt*
-
 Instance folder can be managed just like a normal Minecraft folder.
 Minecraft instances are stored here:
 
@@ -41,8 +53,9 @@ Windows:    %appdata%\.minecraft_instance_manager\instances
 Linux:      ~/.minecraft_instance_manager/instances
 MacOS:      ~/Library/Application Support/minecraft_instance_manager/instances
 ```
+*On MacOS you can access `~/Library/Application Support/` using Spotlight. Just type `~/Library/Application Support/` into the prompt*
 
-After creating the instance folder already has such folders as `mods`, `resourcepacks`, `saves`.
+After creating, the instance folder already has such folders as `mods`, `resourcepacks`, `saves`.
 Install everything you need there.
 
 By modifying the Minecraft folder you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
