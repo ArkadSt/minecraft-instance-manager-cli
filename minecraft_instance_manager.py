@@ -25,7 +25,7 @@ def list_instances():
         for instance_name in os.listdir(minecraft_parent_directory + 'minecraft_instance_manager/instances'):
             if instance_name == '.DS_Store':
                 continue
-            print('* ' + instance_name, end='')
+            print(' ' + instance_name, end='')
             if os.path.exists(minecraft_parent_directory + 'minecraft'):
                 try:
                     if instance_name == os.path.split(os.readlink(minecraft_parent_directory + 'minecraft'))[1]:
@@ -48,9 +48,10 @@ def select_instance():
                 while os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/backups/' + backup_name):
                     backup_name = 'minecraft.backup(' + str(index) + ')'
                     index += 1
-                print('\nSeems like you have an existing Minecraft folder (' + minecraft_parent_directory + 'minecraft). It needs to be deleted first. Choose the next step:')
+                print('\nSeems like you have an existing Minecraft folder (' + minecraft_parent_directory + 'minecraft). It needs to be deleted first.\n')
+                print('Choose the next step:')
                 print('* Make a backup of the Minecraft folder and continue (b)')
-                print("* Continue without making a backup. YOUR MINECRAFT FOLDER'S CONTENTS WILL BE LOST FOREVER! (nb)")
+                print("* Continue without making a backup. YOUR MINECRAFT FOLDER'S CONTENTS WILL BE LOST FOREVER!!! (nb)")
                 print('* Cancel (c)\n')
                 print('>>> ', end='')
                 action = input()
@@ -76,7 +77,9 @@ def select_instance():
 
         print("Enter the name of the instance you want to select (type 'l' to list available instances, or 'c' to cancel): ", end='')
         instance_name = input()
-        while not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name) or instance_name == '' or instance_name == 'l' or instance_name == 'c' or instance_name == '.DS_Store':
+        while (not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name)
+                or instance_name == '' or instance_name == 'l'
+                or instance_name == 'c' or instance_name == '.DS_Store'):
             if instance_name == 'l':
                 list_instances()
                 select_instance()
@@ -109,7 +112,9 @@ def create_instance():
     print("Enter the name of the instance you want to create (without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
     instance_name = input()
 
-    while os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name) or instance_name == 'l' or instance_name == 'c' or instance_name == '.DS_Store':
+    while (os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name)
+            or instance_name == 'l' or instance_name == 'c'
+            or instance_name == '.DS_Store'):
         if instance_name == '':
             print("The name of the instance cannot be blank. Try again (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
             instance_name = input()
@@ -137,34 +142,40 @@ def create_instance():
     os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name + '/mods')
     os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name + '/resourcepacks')
     os.mkdir(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name + '/saves')
-    Path(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name + '/' + instance_name + '.mp3').touch() # Not necessary, just for testing purposes
+    
+    # Not necessary, just for indication purposes
+    Path(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name + '/' + instance_name + '.mp3').touch() 
     
     print('The "' + instance_name + '" instance was successfully created.')
 def delete_instance():
-    print("Enter the name of the instance you want to delete (type 'l' to list available instances, or 'c' to cancel): ", end='')
-    instance_name = input()
-    while not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name) or instance_name == '' or instance_name == 'l' or instance_name == 'c' or instance_name == '.DS_Store':
-        if instance_name == 'l':
-            list_instances()
-            delete_instance()
-            main()
-        elif instance_name == 'c':
-            main()
-        elif instance_name == '.DS_Store':
-            print("I work with Minecraft instances, not with this Apple related shit. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
-            instance_name = input()
-        else:
-            print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
-            instance_name = input()
+    if len(os.listdir(minecraft_parent_directory + 'minecraft_instance_manager/instances')) > 0:
+        print("Enter the name of the instance you want to delete (type 'l' to list available instances, or 'c' to cancel): ", end='')
+        instance_name = input()
+        while (not os.path.exists(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name)
+                or instance_name == '' or instance_name == 'l'
+                or instance_name == 'c' or instance_name == '.DS_Store'):
+            if instance_name == 'l':
+                list_instances()
+                delete_instance()
+                main()
+            elif instance_name == 'c':
+                main()
+            elif instance_name == '.DS_Store':
+                print("I work with Minecraft instances, not with this Apple related shit. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                instance_name = input()
+            else:
+                print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                instance_name = input()
 
-    if os.path.exists(minecraft_parent_directory + 'minecraft'):
-        if os.path.islink(minecraft_parent_directory + 'minecraft'):
-            if instance_name == os.path.split(os.readlink(minecraft_parent_directory + 'minecraft'))[1]:
-                os.unlink(minecraft_parent_directory + 'minecraft')
+        if os.path.exists(minecraft_parent_directory + 'minecraft'):
+            if os.path.islink(minecraft_parent_directory + 'minecraft'):
+                if instance_name == os.path.split(os.readlink(minecraft_parent_directory + 'minecraft'))[1]:
+                    os.unlink(minecraft_parent_directory + 'minecraft')
 
-    shutil.rmtree(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name)
-    print('The instance "' + instance_name + '" was deleted successfully')
-
+        shutil.rmtree(minecraft_parent_directory + 'minecraft_instance_manager/instances/' + instance_name)
+        print('The instance "' + instance_name + '" was deleted successfully')
+    else:
+        print('No available instances found.')
 def menu():
     print('\nMenu: ')
     print('* Display this menu (m)')
