@@ -62,7 +62,7 @@ def select_instance():
                 print('>>> ', end='')
                 action = input()
                 while action != 'b' and action != 'nb' and action != 'c':
-                    print('Seems like you are drunk as well. Sober up and try again')
+                    print('Seems like you are drunk as well. Sober up and try again.')
                     print('>>> ', end='')
                     action = input()
                 if action == 'b':
@@ -107,11 +107,10 @@ def select_instance():
     else:
         print('No available instances found.')
 def unselect_instance():
-    if os.path.exists(minecraft_directory):
-        if os.path.islink(minecraft_directory):
-            instance_name = os.path.split(os.readlink(minecraft_directory))[1]
-            os.unlink(minecraft_directory)
-            print('The instance "{}" was successfully unselected.'.format(instance_name))
+    if os.path.exists(minecraft_directory) and os.path.islink(minecraft_directory):
+        instance_name = os.path.split(os.readlink(minecraft_directory))[1]
+        os.unlink(minecraft_directory)
+        print('The instance "{}" was successfully unselected.'.format(instance_name))
     else:
         print('None of the instances are selected.')
 def create_instance():
@@ -199,7 +198,7 @@ def rename_instance():
                 print("Are you kidding me? Just choose a normal name (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 new_name = input()
             else:
-                print("What for did you come here at all?. Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                print("What for did you come here at all? Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 new_name = input()
                 
         was_active = False
@@ -280,7 +279,7 @@ def main():
         sys.exit(0)
 
     else:
-        print('Invalid input')
+        print('Invalid input.')
     main()
 
 menu()
