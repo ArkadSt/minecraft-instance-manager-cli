@@ -25,7 +25,7 @@ def list_instances():
         for instance_name in os.listdir(minecraft_parent_directory + 'minecraft_instance_manager/instances'):
             if instance_name == '.DS_Store':
                 continue
-            print(instance_name, end='')
+            print('* ' + instance_name, end='')
             if os.path.exists(minecraft_parent_directory + 'minecraft'):
                 try:
                     if instance_name == os.path.split(os.readlink(minecraft_parent_directory + 'minecraft'))[1]:
