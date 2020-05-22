@@ -151,7 +151,7 @@ def delete_instance():
         elif instance_name == 'c':
             main()
         elif instance_name == '.DS_Store':
-            print("WTF?! Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+            print("I work with Minecraft instances, not with this Apple related shit. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
             instance_name = input()
         else:
             print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
