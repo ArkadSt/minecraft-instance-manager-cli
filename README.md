@@ -3,21 +3,6 @@ This program makes possible to have multiple instances of Minecraft with their o
 
 *Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*
 
-## Getting minecraft_instance_manager
-###### Stable
-`git clone https://github.com/ArkadSt/minecraft_instance_manager.git`
-
-###### Testing
-`git clone -b testing https://github.com/ArkadSt/minecraft_instance_manager.git`
-
-## Updating
-First `cd /path/to/minecraft_instance_manager` and then:
-###### Stable
-`git pull origin master`
-
-###### Testing
-`git pull origin testing`
-
 ## Launch
 
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
