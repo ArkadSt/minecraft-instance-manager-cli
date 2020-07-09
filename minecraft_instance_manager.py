@@ -113,9 +113,12 @@ def unselect_instance():
         print('The instance "{}" was successfully unselected.'.format(instance_name))
     else:
         print('None of the instances are selected.')
-def create_instance():
-    print("Enter the name of the instance you want to create (without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
-    instance_name = input()
+def create_instance(reset):
+    if reset == '':
+        print("Enter the name of the instance you want to create (without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+        instance_name = input()
+    else:
+        instance_name = reset
 
     while (os.path.exists(instances_directory + instance_name)
             or instance_name == 'l' or instance_name == 'c'
@@ -125,7 +128,7 @@ def create_instance():
             instance_name = input()
         elif instance_name == 'l':
             list_instances()
-            create_instance()
+            create_instance(reset)
             main()
         elif instance_name == 'c':
             main()
@@ -151,7 +154,8 @@ def create_instance():
     # Not necessary, just for indication purposes
     Path(instances_directory + instance_name + '/' + instance_name + '.mp3').touch() 
     
-    print('The "{}" instance was successfully created.'.format(instance_name))
+    if reset == '':
+        print('The "{}" instance was successfully created.'.format(instance_name))
 
 old_name = ''
 new_name = ''
@@ -215,16 +219,16 @@ def rename_instance():
         print('Instance "{}" was successfully renamed to "{}".'.format(old_name, new_name))
     else:
         print('No available instances found.')
-def delete_instance():
+def delete_instance(action, action_2nd_form):
     if len(os.listdir(instances_directory)) > 0:
-        print("Enter the name of the instance you want to delete (type 'l' to list available instances, or 'c' to cancel): ", end='')
+        print("Enter the name of the instance you want to {} (type 'l' to list available instances, or 'c' to cancel): ".format(action), end='')
         instance_name = input()
         while (not os.path.exists(instances_directory + instance_name)
                 or instance_name == '' or instance_name == 'l'
                 or instance_name == 'c' or instance_name == '.DS_Store'):
             if instance_name == 'l':
                 list_instances()
-                delete_instance()
+                delete_instance(action, action_2nd_form)
                 main()
             elif instance_name == 'c':
                 main()
@@ -235,13 +239,21 @@ def delete_instance():
                 print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 instance_name = input()
 
+        was_active = False
         if os.path.exists(minecraft_directory):
             if os.path.islink(minecraft_directory):
                 if instance_name == os.path.split(os.readlink(minecraft_directory))[1]:
                     os.unlink(minecraft_directory)
+                    was_active = True
 
         shutil.rmtree(instances_directory + instance_name)
-        print('The instance "{}" was deleted successfully.'.format(instance_name))
+
+        if action == 'reset':
+            create_instance(instance_name)
+            if was_active:
+                os.symlink(instances_directory + instance_name, minecraft_directory)
+
+        print('The instance "{}" was {} successfully.'.format(instance_name, action_2nd_form))
     else:
         print('No available instances found.')
 def menu():
@@ -252,6 +264,7 @@ def menu():
     print('* Unselect instance (u)')
     print('* Create instance (c)')
     print('* Rename instance (r)')
+    print('* Reset instance (R) - DANGER ZONE!!!')
     print('* Delete instance (d) - DANGER ZONE!!!')
     print('* Exit (q)\n')
     print('Enter the appropriate letter.')
@@ -270,11 +283,13 @@ def main():
     elif action == 'u':
         unselect_instance()
     elif action == 'c':
-        create_instance()
+        create_instance('')
     elif action == 'r':
         rename_instance()
+    elif action == 'R':
+        delete_instance('reset', 'reset')
     elif action == 'd':
-        delete_instance()
+        delete_instance('delete', 'deleted')
     elif action == 'q':
         sys.exit(0)
 
