@@ -199,12 +199,15 @@ def rename_instance():
                 new_name = ''
                 main()
             elif new_name == '.DS_Store':
-                print("Are you kidding me? Just choose a normal name (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                print("Are you kidding me? Just choose a normal name (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 new_name = input()
-            else:
+            elif new_name == old_name:
                 print("What for did you come here at all? Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
                 new_name = input()
-                
+            else:
+                print("An instance with the same name already exists. Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+        
         was_active = False
         if os.path.exists(minecraft_directory):
             if os.path.islink(minecraft_directory):
@@ -217,6 +220,59 @@ def rename_instance():
         if was_active:
             os.symlink(instances_directory + new_name, minecraft_directory)
         print('Instance "{}" was successfully renamed to "{}".'.format(old_name, new_name))
+    else:
+        print('No available instances found.')
+def duplicate_instance():
+    if len(os.listdir(instances_directory)) > 0:
+        global old_name
+        global new_name
+        if new_name != 'is being choosed already':
+            print("Enter the name of the instance you want to make a duplicate of (type 'l' to list available instances, or 'c' to cancel): ", end='')
+            old_name = input()
+            while (not os.path.exists(instances_directory + old_name)
+                    or old_name == '' or old_name == 'l'
+                    or old_name == 'c' or old_name == '.DS_Store'):
+                if old_name == 'l':
+                    list_instances()
+                    duplicate_instance()
+                    main()
+                elif old_name == 'c':
+                    main()
+                elif old_name == '.DS_Store':
+                    print("I work with Minecraft instances, not with this Apple related shit. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                    old_name = input()
+                else:
+                    print("The instance with such name does not exist. Try again (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                    old_name = input()
+
+        print("Enter the name of the duplicate (without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+        new_name = input()
+        while (os.path.exists(instances_directory + new_name)
+                or new_name == 'l' or new_name == 'c'
+                or new_name == '.DS_Store'):
+            if new_name == '':
+                print("The name of the instance cannot be blank. Try again (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+            elif new_name == 'l':
+                list_instances()
+                new_name = 'is being choosed already'
+                duplicate_instance()
+                main()
+            elif new_name == 'c':
+                new_name = ''
+                main()
+            elif new_name == '.DS_Store':
+                print("Are you kidding me? Just choose a normal name (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+            elif new_name == old_name:
+                print("You cannot use the same name for the duplicate. Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+            else:
+                print("An instance with the same name already exists. Choose another name please (type_without_spaces) (type 'l' to list available instances, or 'c' to cancel): ", end='')
+                new_name = input()
+                
+        shutil.copytree(instances_directory + old_name, instances_directory + new_name)
+        print('The duplicate of "{}" named "{}" was successfully created.'.format(old_name, new_name))
     else:
         print('No available instances found.')
 def delete_instance(action, action_2nd_form):
@@ -264,8 +320,9 @@ def menu():
     print('* Unselect instance (u)')
     print('* Create instance (c)')
     print('* Rename instance (r)')
+    print('* Duplicate instance (d)')
     print('* Reset instance (R) - DANGER ZONE!!!')
-    print('* Delete instance (d) - DANGER ZONE!!!')
+    print('* Delete instance (D) - DANGER ZONE!!!')
     print('* Exit (q)\n')
     print('Enter the appropriate letter.')
 
@@ -286,9 +343,11 @@ def main():
         create_instance('')
     elif action == 'r':
         rename_instance()
+    elif action == 'd':
+        duplicate_instance()
     elif action == 'R':
         delete_instance('reset', 'reset')
-    elif action == 'd':
+    elif action == 'D':
         delete_instance('delete', 'deleted')
     elif action == 'q':
         sys.exit(0)
