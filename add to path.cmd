@@ -1,0 +1,1 @@
+setx /M path "%PATH%;F:\python\minecraft_instance_manager\dist\main"

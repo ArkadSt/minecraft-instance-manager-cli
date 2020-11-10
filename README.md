@@ -1,8 +1,8 @@
 # minecraft_instance_manager
 This program makes possible to have multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
 
-*Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*
-
+*Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*\
+*Updated by rain*
 ## Launch
 
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
@@ -13,8 +13,11 @@ Linux, MacOS: python3 minecraft_instance_manager.py
 Windows:      python minecraft_instance_manager.py
 ```
 
+***Only for Windows***\
+Also, you can download release from github, place ".exe" file in folder on your C: disk to use it from cmd everywhere!
+
 ***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
-The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager.py` and then User Account Control (UAC) will appear.***
+The easiest way of executing this program on Windows is to open `minecraft_instance_manager.py` in the cmd and then User Account Control (UAC) will appear.***
 
 ## How does this program work
 
@@ -44,15 +47,6 @@ After creating, the instance folder already has such folders as `mods`, `resourc
 Install everything you need there.
 
 By modifying the Minecraft folder you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
-
-## Backups
-If **minecraft_instance_manager** sees that Minecraft folder is not a symlink but a normal folder, it will offer you to make a backup. Backups created by the program are stored here:
-
-```
-Windows:    %appdata%\.minecraft_instance_manager\backups
-Linux:      ~/.minecraft_instance_manager/backups
-MacOS:      ~/Library/Application Support/minecraft_instance_manager/backups
-```
 
 ___
 *P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to Minecraft folder for example. It is safe to be removed if you don't want it there.*
