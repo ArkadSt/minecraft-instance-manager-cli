@@ -29,9 +29,11 @@ elif platform.system() == 'Windows':
 minecraft_directory = minecraft_parent_directory + 'minecraft'
 minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft_instance_manager/'
 instances_directory = minecraft_instance_manager_directory + 'instances/'
-backups_directory = minecraft_instance_manager_directory + 'backups/'
 
-# Checking for existing minecraft folders and minecraft instance manager
+# Needed in order to reselect the reset instance if it was selected before
+was_active = False 
+
+# Checking for existing minecraft and minecraft-instance-manager folders
 if not os.path.exists(minecraft_instance_manager_directory):
     os.mkdir(minecraft_instance_manager_directory)
 if not os.path.exists(instances_directory):
@@ -40,134 +42,155 @@ if not os.path.exists(instances_directory):
 # Function to view list
 @cli.command()
 def list_instances():
-    # if instances_directory exist, i guess
+    # if there is at least 1 instance
     if len(os.listdir(instances_directory)) > 0:
         # for instance name print instance name with cute view
-        for instance_name in os.listdir(instances_directory):
-            print(' ' + instance_name, end='')
+        for instance in os.listdir(instances_directory):
+            if instance == '.DS_Store':
+                continue
             if os.path.exists(minecraft_directory):
-                # if minecraft directory path exist try reading link and add "active" to instance
-                try:
-                    if instance_name == os.path.split(os.readlink(minecraft_directory))[1]:
-                        print(' (active)', end='')
-                except OSError:
-                    pass
-            print()
+                if os.path.islink(minecraft_directory):
+                    if instance == os.path.split(os.readlink(minecraft_directory))[1]:
+                        print('*', end='')
+                    else:
+                        print(' ', end='')
+            print(instance)
     else:
         print('No available instances found.')
 
 @cli.command()
 @click.argument("instance")
 def select_instance(instance):
-    # if instances directory exist, then
-    if len(os.listdir(instances_directory)) > 0:
-        # if path of minecraft exist
-        if os.path.exists(minecraft_directory):
-            # if minecraft directory is not a link, then
-            if not os.path.islink(minecraft_directory):
-                # if backups directory not exist, then
-                if not os.path.exists(backups_directory):
-                    # create dir with backups
-                    os.mkdir(backups_directory)
-
-                # backup name seted to "minecraft.backup"
-                backup_name = 'minecraft.backup'
-                index = 1
-                # while backup exist, index++
-                while os.path.exists(backups_directory + backup_name):
-                    backup_name = 'minecraft.backup({})'.format(str(index))
-                    index += 1
-                print(f'\nSeems like you have an existing Minecraft folder {minecraft_directory}. It needs to be deleted, backuped or moved first.\n')
-
-        else:
-            try:
-                os.stat(minecraft_directory)
-            except OSError:
+    # if the instance with such name exists
+    if os.path.exists(instances_directory + instance):
+        if instance != '.DS_Store':
+            # if path of minecraft exist
+            if os.path.exists(minecraft_directory):
+                # if minecraft directory is a link, then
+                if os.path.islink(minecraft_directory):
+                    os.unlink(minecraft_directory)
+            else:
                 try:
-                    os.remove(minecraft_directory)
-                except FileNotFoundError:
-                    pass
-
-        instance_name = instance
-
-        if os.path.exists(minecraft_directory):
-            if os.path.islink(minecraft_directory):
-                os.unlink(minecraft_directory)
-        os.symlink(instances_directory + instance_name, minecraft_directory)
-        print('The instance "' + instance_name + '" was selected successfully.')
+                    os.stat(minecraft_directory)
+                except OSError:
+                    try:
+                        os.remove(minecraft_directory)
+                    except FileNotFoundError:
+                        pass
+            try:
+                os.symlink(instances_directory + instance, minecraft_directory)
+                print(f'The instance "{instance}" was selected successfully.')
+            except FileExistsError:
+                print(f'Seems like you have an existing Minecraft folder "{minecraft_directory}". It needs to be deleted or moved first.')
+        else:
+            print('Are you on drugs?')
     else:
-        print('No available instances found.')
+        print(f'The instance "{instance}" doesn\'t exist.')
 
 @cli.command()
-@click.argument("instance")
-def unselect_instance(instance):
+def unselect_instance():
     if os.path.exists(minecraft_directory) and os.path.islink(minecraft_directory):
-        instance_name = os.path.split(os.readlink(minecraft_directory))[1]
+        instance = os.path.split(os.readlink(minecraft_directory))[1]
         os.unlink(minecraft_directory)
-        print(f'The instance {instance_name} was successfully unselected.')
+        print(f'The instance "{instance}" was successfully unselected.')
     else:
         print('None of the instances are selected.')
+
+def create_instance_universal(instance):
+    if instance == '.DS_Store':
+        print('Go find a job.')
+        exit(1)
+    if os.path.exists(instances_directory + instance):
+        print(f'The instance "{instance}" already exists')
+        exit(1)
+
+    # Create main instance folder
+    os.mkdir(instances_directory + instance)
+    # Create subfolders
+    os.mkdir(instances_directory + instance + '/mods')
+    os.mkdir(instances_directory + instance + '/resourcepacks')
+    os.mkdir(instances_directory + instance + '/saves')
+
+    # Not necessary, just for indication purposes
+    Path(instances_directory + instance + '/' + instance + '.mp3').touch()
+
+
+def delete_instance_universal(instance):
+    if not os.path.exists(instances_directory + instance):
+        print(f'The instance "{instance}" doesn\'t exist.')
+        exit(1)
+    if instance == '.DS_Store':
+        print("What's wrong with you?")
+        exit(1)
+
+    global was_active
+    was_active = False
+    if os.path.exists(minecraft_directory):
+        if os.path.islink(minecraft_directory):
+            if instance == os.path.split(os.readlink(minecraft_directory))[1]:
+                os.unlink(minecraft_directory)
+                was_active = True
+
+    shutil.rmtree(instances_directory + instance)
 
 @cli.command()
 @click.argument("instance")
 def create_instance(instance):
-    instance_name = instance
-
-    while os.path.exists(instances_directory + instance_name):
-        if instance_name == '':
-            print("The name of the instance cannot be blank. Try again (type_without_spaces) (type 'list_instances' to list available instances)")
-        else:
-            print('An instance with the same name already exists. Choose another name')
-
-    os.mkdir(instances_directory + instance_name)
-    os.mkdir(instances_directory + instance_name + '/mods')
-    os.mkdir(instances_directory + instance_name + '/resourcepacks')
-    os.mkdir(instances_directory + instance_name + '/saves')
-
-    # Not necessary, just for indication purposes
-    Path(instances_directory + instance_name + '/' + instance_name + '.mp3').touch()
-
-@cli.command()
-@click.argument("instance")
-@click.argument("new_name")
-def rename_instance(instance, new_name):
-    if len(os.listdir(instances_directory)) > 0:
-        was_active = False
-        if os.path.exists(minecraft_directory):
-            if os.path.islink(minecraft_directory):
-                if instance == os.path.split(os.readlink(minecraft_directory))[1]:
-                    os.unlink(minecraft_directory)
-                    was_active = True
-        try:
-            os.rename(instances_directory + instance, instances_directory + new_name)
-            if was_active:
-                os.symlink(instances_directory + new_name, minecraft_directory)
-                print(f'Instance "{instance}" was successfully renamed to "{new_name}".')
-            else:
-                print('No available instances found.')
-        except FileNotFoundError:
-            print('No such instance, change name and try again type (type "list-instances" to list available instances)')
+    create_instance_universal(instance)
+    print(f'The instance "{instance}" was created successfully.')
 
 @cli.command()
 @click.argument("instance")
 def delete_instance(instance):
-    if len(os.listdir(instances_directory)) > 0:
-        instance_name = instance
-        while not os.path.exists(instances_directory + instance_name):
-            print("The instance with such name does not exist. Try again (type 'list-instances' to list available instances)")
+    delete_instance_universal(instance)
+    print(f'The instance "{instance}" was deleted successfully.')
 
-        was_active = False
-        if os.path.exists(minecraft_directory):
-            if os.path.islink(minecraft_directory):
-                if instance_name == os.path.split(os.readlink(minecraft_directory))[1]:
-                    os.unlink(minecraft_directory)
-                    was_active = True
+@cli.command()
+@click.argument("instance")
+@click.argument("new_instance_name")
+def rename_instance(instance, new_instance_name):
+    if os.path.exists(instances_directory + instance):
+        if not os.path.exists(instances_directory + new_instance_name):
+            was_active = False
+            if os.path.exists(minecraft_directory):
+                if os.path.islink(minecraft_directory):
+                    if instance == os.path.split(os.readlink(minecraft_directory))[1]:
+                        os.unlink(minecraft_directory)
+                        was_active = True
 
-        shutil.rmtree(instances_directory + instance_name)
+            os.rename(instances_directory + instance, instances_directory + new_instance_name)
 
-        print(f'The instance "{instance}" was deleted successfully.')
+            if was_active:
+                os.symlink(instances_directory + new_instance_name, minecraft_directory)
+
+            print(f'Instance "{instance}" was successfully renamed to "{new_instance_name}".')
+        else:
+            print(f'The instance "{new_instance_name}" already exists')
     else:
-        print('No available instances found.')
+        print(f'The instance "{instance}" doesn\'t exist')
+
+@cli.command()
+@click.argument("instance")
+def reset_instance(instance):
+    delete_instance_universal(instance)
+    create_instance_universal(instance)
+
+    if was_active:
+        os.symlink(instances_directory + instance, minecraft_directory)
+    print(f'The instance "{instance}" was reset successfully.')
+
+@cli.command()
+@click.argument("instance")
+@click.argument("duplicate")
+def duplicate_instance(instance, duplicate):
+    if os.path.exists(instances_directory + instance):
+        if not os.path.exists(instances_directory + duplicate):
+            shutil.copytree(instances_directory + instance, instances_directory + duplicate)
+            print(f'The duplicate of "{instance}" named "{duplicate}" was successfully created.')
+        else:
+            print(f'The instance "{duplicate}" already exists')
+    else:
+        print(f'The instance "{instance}" doesn\'t exist')
 
 if __name__ == '__main__':
     cli()
