@@ -2,3 +2,4 @@ add to path.cmd
 main.spec
 build
 dist
+*.cmd
