@@ -1,20 +1,26 @@
 # minecraft_instance_manager
 This program makes possible to have multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
 
-*Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*
+### List of contributors
+Tomás Henrique Strotsjak Barata - helped me in testing this program on it's early stage of development.  
+ra1nlox - ported everything to click library, which resulted in cleaner code and nice command line interface
+
+## Dependencies
+minecraft_instance_manager needs **click** package in order to work.  
+It can be easily installed by performing `pip install click`
 
 ## Launch
-
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
-If you have installed Python3, you can run the program by executing this command in console:
+If you have installed Python3, you can run the program by executing this command in console. That will display the help page:
 
 ```
 Linux, MacOS: python3 minecraft_instance_manager.py
 Windows:      python minecraft_instance_manager.py
 ```
 
-***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
-The easiest way of executing this program on Windows is to double click on `minecraft_instance_manager.py` and then User Account Control (UAC) will appear.***
+***NB! On Windows this program requires administrative priveleges because on Windows only administrators can create symlinks. It is recommended to use this program from admin console.***
+
+Program is intended to be run with commands, listed on the help page. Most of the commands require 1 or 2 arguments, depending on the task.
 
 ## How does this program work
 
@@ -44,15 +50,6 @@ After creating, the instance folder already has such folders as `mods`, `resourc
 Install everything you need there.
 
 By modifying the Minecraft folder you modify the working Minecraft instance. The working instance can be choosed using **minecraft_instance_manager**. Instance folders can be created and deleted using **minecraft_instance_manager** or manually as well. My utility just makes it easier (I hope).
-
-## Backups
-If **minecraft_instance_manager** sees that Minecraft folder is not a symlink but a normal folder, it will offer you to make a backup. Backups created by the program are stored here:
-
-```
-Windows:    %appdata%\.minecraft_instance_manager\backups
-Linux:      ~/.minecraft_instance_manager/backups
-MacOS:      ~/Library/Application Support/minecraft_instance_manager/backups
-```
 
 ___
 *P.S. **minecraft_instance_manager** adds `instance_name.mp3` in the root of the created instance folder, which is only needed for indication of the working instance if you go directly to Minecraft folder for example. It is safe to be removed if you don't want it there.*
