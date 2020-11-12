@@ -1,23 +1,26 @@
 # minecraft_instance_manager
 This program makes possible to have multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
 
-*Special thanks to my friend, Tomás Henrique Strotsjak Barata, who has helped me in testing this software.*\
-*Updated by rain*
-## Launch
+### List of contributors
+Tomás Henrique Strotsjak Barata - helped me in testing this program on it's early stage of development.  
+ra1nlox - ported everything to click library, which resulted in cleaner code and nice command line interface
 
+## Dependencies
+minecraft_instance_manager needs **click** package in order to work.  
+It can be easily installed by performing `pip install click`
+
+## Launch
 You need Python3 (https://www.python.org/downloads/) in order to run this program.
-If you have installed Python3, you can run the program by executing this command in console:
+If you have installed Python3, you can run the program by executing this command in console. That will display the help page:
 
 ```
 Linux, MacOS: python3 minecraft_instance_manager.py
 Windows:      python minecraft_instance_manager.py
 ```
 
-***Only for Windows***\
-Also, you can download release from github, place ".exe" file in folder on your C: disk to use it from cmd everywhere!
+***NB! On Windows this program requires administrative priveleges because on Windows only administrators can create symlinks. It is recommended to use this program from admin console.***
 
-***NB! On Windows this program requires administrative priveleges because on Windows only administrator can create symlinks.
-The easiest way of executing this program on Windows is to open `minecraft_instance_manager.py` in the cmd and then User Account Control (UAC) will appear.***
+Program is intended to be run with commands, listed on the help page. Most of the commands require 1 or 2 arguments, depending on the task.
 
 ## How does this program work
 
