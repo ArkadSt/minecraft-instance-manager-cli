@@ -51,10 +51,9 @@ def list_instances():
             if os.path.exists(minecraft_directory):
                 if os.path.islink(minecraft_directory):
                     if instance == os.path.split(os.readlink(minecraft_directory))[1]:
-                        print('*', end='')
-                    else:
-                        print(' ', end='')
-            print(instance)
+                        print('*' + instance)
+                        continue
+            print(' ' + instance)
     else:
         print('No available instances found.')
 
