@@ -1,5 +1,5 @@
 # minecraft-instance-manager-cli
-This program makes possible to have multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
+This is the cli version of **minecraft-instance-manager**. **minecraft-instance-manager** makes possible having multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
 
 ### List of contributors
 Tomás Henrique Strotsjak Barata - helped me in testing this program on it's early stage of development.  
@@ -18,7 +18,7 @@ Linux, MacOS: python3 minecraft-instance-manager.py
 Windows:      python minecraft-instance-manager.py
 ```
 
-***NB! On Windows this program requires administrative priveleges because on Windows only administrators can create symlinks. It is recommended to use this program from admin console.***
+***NB! On Windows this program requires administrative priveleges because on Windows only administrators can create symlinks. It is recommended to run this program from admin console.***
 
 Program is intended to be run with commands, listed on the help page. Most of the commands require 1 or 2 arguments, depending on the task.
 
