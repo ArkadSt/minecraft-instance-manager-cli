@@ -14,8 +14,8 @@ You need Python3 (https://www.python.org/downloads/) in order to run this progra
 If you have installed Python3, you can run the program by executing this command in console. That will display the help page:
 
 ```
-Linux, MacOS: python3 minecraft-instance-manager.py
-Windows:      python minecraft-instance-manager.py
+Linux, MacOS: python3 minecraft-im.py
+Windows:      python minecraft-im.py
 ```
 
 ***NB! On Windows this program requires administrative priveleges because on Windows only administrators can create symlinks. It is recommended to run this program from admin console.***
