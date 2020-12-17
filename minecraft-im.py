@@ -27,7 +27,7 @@ elif platform.system() == 'Windows':
 
 # Variables for paths
 minecraft_directory = minecraft_parent_directory + 'minecraft'
-minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft_instance_manager/'
+minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft-instance-manager/'
 instances_directory = minecraft_instance_manager_directory + 'instances/'
 
 # Needed in order to reselect the reset instance if it was selected before
