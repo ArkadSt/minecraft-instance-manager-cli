@@ -1,5 +1,5 @@
 # minecraft-instance-manager-cli
-This is the cli version of **minecraft-instance-manager**. **minecraft-instance-manager** makes possible having multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
+This is the cli version of **minecraft-instance-manager**. **minecraft-instance-manager** makes possible to have multiple instances of Minecraft with their own set of mods, resourcepacks, etc.
 
 ### List of contributors
 Tomás Henrique Strotsjak Barata - helped me in testing this program on it's early stage of development.  
