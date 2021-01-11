@@ -33,7 +33,7 @@ Linux:      ~/.minecraft
 MacOS:      ~/Library/Application Support/minecraft
 ```
 
-Minecraft folder is a symlink that is targeted at the selected instance folder.
+Minecraft folder becomes a symlink, targeted at the selected instance folder.
 
 ## How to manage Minecraft instances
 Instance folder can be managed just like a normal Minecraft folder.
