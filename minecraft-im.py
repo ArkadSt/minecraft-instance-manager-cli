@@ -1,5 +1,3 @@
-# Hi, i maked this mod for your program to use it directly from cmd, thanks!
-
 import os
 import platform
 import shutil
@@ -30,7 +28,7 @@ minecraft_directory = minecraft_parent_directory + 'minecraft'
 minecraft_instance_manager_directory = minecraft_parent_directory + 'minecraft-instance-manager/'
 instances_directory = minecraft_instance_manager_directory + 'instances/'
 
-# Needed in order to reselect the reset instance if it was selected before
+# Needed in order to reactivate the reset instance if it was activated before
 was_active = False 
 
 # Checking for existing minecraft and minecraft-instance-manager folders
@@ -59,7 +57,7 @@ def list_instances():
 
 @cli.command()
 @click.argument("instance")
-def select_instance(instance):
+def activate_instance(instance):
     # if the instance with such name exists
     if os.path.exists(instances_directory + instance):
         if instance != '.DS_Store':
@@ -78,7 +76,7 @@ def select_instance(instance):
                         pass
             try:
                 os.symlink(instances_directory + instance, minecraft_directory)
-                print(f'The instance "{instance}" was selected successfully.')
+                print(f'The instance "{instance}" was activated successfully.')
             except FileExistsError:
                 print(f'Seems like you have an existing Minecraft folder "{minecraft_directory}". It needs to be deleted or moved first.')
         else:
@@ -87,13 +85,13 @@ def select_instance(instance):
         print(f'The instance "{instance}" doesn\'t exist.')
 
 @cli.command()
-def unselect_instance():
+def deactivate_instance():
     if os.path.exists(minecraft_directory) and os.path.islink(minecraft_directory):
         instance = os.path.split(os.readlink(minecraft_directory))[1]
         os.unlink(minecraft_directory)
-        print(f'The instance "{instance}" was successfully unselected.')
+        print(f'The instance "{instance}" was successfully deactivated.')
     else:
-        print('None of the instances are selected.')
+        print('No active instances.')
 
 def create_instance_universal(instance):
     if instance == '.DS_Store':
